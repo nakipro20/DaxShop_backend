@@ -16,7 +16,7 @@ router.get('/:id', ProductoController.verProducto);
 // ==============================
 // Nota como pasamos 'verificarToken' antes de ir al controlador
 router.post('/admin/crear', verificarToken, CmsProductoController.crear)
-router.post('/admin/:id/imagen', verificarToken, upload.single('imagen'), CmsProductoController.subirImagenProducto);;
+router.post('/admin/:id/imagen', verificarToken, upload.single('imagen'), CmsProductoController.subirImagenProducto);
 router.delete('/admin/eliminar/:id', verificarToken, CmsProductoController.eliminar);
 
 module.exports = router;
