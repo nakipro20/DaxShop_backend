@@ -7,9 +7,21 @@ const app = express()
 const PORT = process.env.PORT || 3000
 const pool = require('./config/db')
 
+// importar rutas
+const productoRoutes = require('./routes/productoRoutes')
+const portafolioRoutes = require('./routes/portafolioRoutes')
+const comisionRoutes = require('./routes/comisionRoutes')
+const authRoutes = require('./routes/authRoutes')
+
 // middleware
 app.use(cors())
 app.use(express.json())
+
+// Consumir rutas
+app.use('/productos', productoRoutes)
+app.use('/portafolio', portafolioRoutes)
+app.use('/comisiones', comisionRoutes)
+app.use('/auth', authRoutes)
 
 // ruta inicial de prueba
 app.get('/api', (req, res) => {
