@@ -11,6 +11,20 @@ const CmsPortafolioController = {
     }
   },
 
+  // Actualizar una obra existente
+  actualizar: async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) return res.status(400).json({ exito: false, mensaje: 'ID inválido' });
+
+      await CmsPortafolioModel.actualizarObra(id, req.body);
+      res.status(200).json({ exito: true, mensaje: 'Obra actualizada correctamente' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ exito: false, mensaje: 'Error al actualizar la obra', detalle: error.message });
+    }
+  },
+
   eliminar: async (req, res) => {
     try {
       const id = parseInt(req.params.id, 10);
@@ -24,10 +38,42 @@ const CmsPortafolioController = {
     }
   },
 
+  // Detalle completo para precargar el formulario de edición en el CMS
+  detalle: async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) return res.status(400).json({ exito: false, mensaje: 'ID inválido' });
+
+      const obra = await CmsPortafolioModel.obtenerDetalleObra(id);
+      if (!obra) {
+        return res.status(404).json({ exito: false, mensaje: 'Obra no encontrada' });
+      }
+
+      res.status(200).json({ exito: true, datos: obra });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ exito: false, mensaje: 'Error al obtener el detalle de la obra' });
+    }
+  },
+
+  // Galería de imágenes de la obra
+  galeria: async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) return res.status(400).json({ exito: false, mensaje: 'ID inválido' });
+
+      const imagenes = await CmsPortafolioModel.obtenerGaleriaObra(id);
+      res.status(200).json({ exito: true, cantidad: imagenes.length, datos: imagenes });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ exito: false, mensaje: 'Error al obtener la galería de la obra' });
+    }
+  },
+
   subirImagenObra: async (req, res) => {
     try {
       const obra_id = parseInt(req.params.id, 10);
-      
+
       if (!req.file) {
         return res.status(400).json({ exito: false, mensaje: 'No se envió ninguna imagen' });
       }

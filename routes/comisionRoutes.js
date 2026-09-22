@@ -1,7 +1,18 @@
-const express = require('express')
-const router = express.Router()
-const ComisionController = require('../controllers/comisionController')
+const express = require('express');
+const router = express.Router();
+const ComisionController = require('../controllers/comisionController');
+const CmsComisionesController = require('../controllers/cmsComisionesController');
+const verificarToken = require('../middlewares/authMiddleware');
 
-router.get('/', ComisionController.listarComisiones)
+// ==============================
+// RUTAS PÚBLICAS (Lectura)
+// ==============================
+router.get('/', ComisionController.listarComisiones);
 
-module.exports = router
+// ==============================
+// RUTAS PRIVADAS / CMS (Escritura)
+// ==============================
+router.post('/admin/crear', verificarToken, CmsComisionesController.crear);
+router.delete('/admin/eliminar/:id', verificarToken, CmsComisionesController.eliminar);
+
+module.exports = router;
