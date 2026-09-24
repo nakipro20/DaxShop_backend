@@ -22,6 +22,30 @@ const CmsComisionesController = {
       console.error(error);
       res.status(500).json({ exito: false, mensaje: 'Error al eliminar el tipo de comisión', detalle: error.message });
     }
+  },
+
+  // NUEVO: Método para subir la imagen, basado en tu ejemplo de portafolio
+  subirImagen: async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) return res.status(400).json({ exito: false, mensaje: 'ID inválido' });
+
+      // Verificamos que el middleware (como multer) haya procesado un archivo
+      if (!req.file) {
+        return res.status(400).json({ exito: false, mensaje: 'No se envió ninguna imagen' });
+      }
+
+      // Extraemos la URL o ruta del archivo subido
+      const imageUrl = req.file.path; 
+
+      // Llamamos al modelo que ya tenías preparado
+      await CmsComisionesModel.actualizarImagenComision(id, imageUrl);
+
+      res.status(200).json({ exito: true, mensaje: 'Imagen de portada actualizada', url: imageUrl });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ exito: false, mensaje: 'Error al subir la imagen de la comisión', detalle: error.message });
+    }
   }
 };
 

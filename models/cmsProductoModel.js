@@ -56,6 +56,18 @@ const CmsProductoModel = {
     }
   },
 
+  // Listado para el admin: incluye productos ocultos y trae la columna
+  // visibility (sp_get_public_products no la devuelve, por eso este SP aparte)
+  obtenerProductosAdmin: async (categoria_id = null) => {
+    try {
+      const result = await pool.query('SELECT * FROM sp_get_admin_products($1)', [categoria_id]);
+      return result.rows;
+    } catch (error) {
+      console.error('Error en modelo obtenerProductosAdmin:', error);
+      throw error;
+    }
+  },
+
   // Detalle completo de un producto (para precargar el formulario de edición)
   obtenerDetalleProducto: async (id) => {
     try {

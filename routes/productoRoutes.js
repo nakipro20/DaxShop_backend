@@ -15,6 +15,7 @@ router.get('/:id', ProductoController.verProducto);
 // ==============================
 // RUTAS PRIVADAS / CMS (Con guardia)
 // ==============================
+router.get('/admin/listado', verificarToken, CmsProductoController.listarAdmin); // NUEVO
 router.post('/admin/crear', verificarToken, CmsProductoController.crear);
 router.put('/admin/actualizar/:id', verificarToken, CmsProductoController.actualizar); // NUEVO
 router.patch('/admin/:id/estado', verificarToken, CmsProductoController.actualizarEstado); // NUEVO

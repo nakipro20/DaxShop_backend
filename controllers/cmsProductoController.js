@@ -60,6 +60,18 @@ const CmsProductoController = {
     }
   },
 
+  // Listado para la tabla de gestión del admin (incluye ocultos + visibility)
+  listarAdmin: async (req, res) => {
+    try {
+      const categoria_id = req.query.categoria_id ? parseInt(req.query.categoria_id, 10) : null;
+      const productos = await CmsProductoModel.obtenerProductosAdmin(categoria_id);
+      res.status(200).json({ exito: true, cantidad: productos.length, datos: productos });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ exito: false, mensaje: 'Error al obtener el listado de productos' });
+    }
+  },
+
   // Detalle completo para precargar el formulario de edición en el CMS
   detalle: async (req, res) => {
     try {
